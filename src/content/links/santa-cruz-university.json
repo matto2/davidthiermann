@@ -3,5 +3,6 @@
   "url": "http://santacruzuniversity.com/",
   "description": "Expert career counseling",
   "order": 1,
-  "thumbnail": "../../assets/santa-cruz-university.png"
+  "thumbnail": "../../assets/santa-cruz-university.png",
+  "thumbnailZoom": true
 }

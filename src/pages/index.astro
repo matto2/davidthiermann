@@ -4,7 +4,9 @@ import { Image } from 'astro:assets';
 import davidPhoto from '../assets/david.png';
 
 const allLinks = await getCollection('links');
-const links = allLinks.sort((a, b) => a.data.order - b.data.order);
+const sorted = allLinks.sort((a, b) => a.data.order - b.data.order);
+const contactItems = sorted.filter(l => l.data.contactCard);
+const links = sorted.filter(l => !l.data.contactCard);
 ---
 
 <!DOCTYPE html>
@@ -42,6 +44,25 @@ const links = allLinks.sort((a, b) => a.data.order - b.data.order);
           />
         </div>
         <h1 class="name">David Thiermann</h1>
+        <div class="contact-strip">
+          {contactItems.map((item, i) => (
+            <>
+              {i > 0 && <span class="contact-sep" aria-hidden="true">|</span>}
+              <a href={item.data.url} class="contact-item">
+                {item.data.thumbnail && (
+                  <Image
+                    src={item.data.thumbnail}
+                    alt=""
+                    width={14}
+                    height={14}
+                    class="contact-icon"
+                  />
+                )}
+                <span>{item.data.title}</span>
+              </a>
+            </>
+          ))}
+        </div>
       </header>
 
       <!-- Links -->
@@ -55,7 +76,7 @@ const links = allLinks.sort((a, b) => a.data.order - b.data.order);
                 rel="noopener noreferrer"
                 class="link-card"
               >
-                <div class="thumb" aria-hidden="true">
+                <div class={`thumb${link.data.isIcon ? ' thumb-icon' : ''}`} aria-hidden="true">
                   {link.data.thumbnail ? (
                     <Image
                       src={link.data.thumbnail}
@@ -63,7 +84,7 @@ const links = allLinks.sort((a, b) => a.data.order - b.data.order);
                       width={66}
                       height={66}
                       loading="lazy"
-                      class="thumb-img"
+                      class={`thumb-img${link.data.thumbnailZoom ? ' thumb-img-zoom' : ''}`}
                     />
                   ) : (
                     <div class="thumb-placeholder">
@@ -195,6 +216,42 @@ const links = allLinks.sort((a, b) => a.data.order - b.data.order);
         text-align: center;
       }
 
+      /* ── Contact strip ──────────────────────────── */
+      .contact-strip {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        color: var(--text);
+        transition: color 0.18s ease;
+      }
+
+      .contact-item:hover {
+        color: var(--blue);
+      }
+
+      .contact-icon {
+        filter: invert(47%) sepia(80%) saturate(800%) hue-rotate(196deg) brightness(105%);
+        flex-shrink: 0;
+      }
+
+      .contact-sep {
+        color: var(--blue);
+        opacity: 0.35;
+        font-weight: 300;
+        user-select: none;
+      }
+
       /* ── Links list ──────────────────────────────── */
       .links-list {
         list-style: none;
@@ -258,6 +315,24 @@ const links = allLinks.sort((a, b) => a.data.order - b.data.order);
         height: 100%;
         object-fit: cover;
         display: block;
+      }
+
+      .thumb-img-zoom {
+        transform: scale(1.18);
+      }
+
+      .thumb-icon {
+        background: linear-gradient(140deg, var(--blue) 0%, var(--blue-deep) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .thumb-icon .thumb-img {
+        width: 34px;
+        height: 34px;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
       }
 
       .thumb-placeholder {

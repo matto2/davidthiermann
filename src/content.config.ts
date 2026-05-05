@@ -9,6 +9,9 @@ const links = defineCollection({
     description: z.string().optional(),
     order: z.number(),
     thumbnail: image().optional(),
+    thumbnailZoom: z.boolean().optional(),
+    isIcon: z.boolean().optional(),
+    contactCard: z.boolean().optional(),
   }),
 });
 

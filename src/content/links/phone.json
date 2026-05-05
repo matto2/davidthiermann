@@ -2,5 +2,8 @@
   "title": "(831) 435-9321",
   "url": "tel:+18314359321",
   "description": "Call David",
-  "order": 3
+  "order": 5,
+  "thumbnail": "../../assets/phone-call-svgrepo-com.svg",
+  "isIcon": true,
+  "contactCard": true
 }
