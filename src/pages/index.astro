@@ -7,6 +7,7 @@ const allLinks = await getCollection('links');
 const sorted = allLinks.sort((a, b) => a.data.order - b.data.order);
 const contactItems = sorted.filter(l => l.data.contactCard);
 const links = sorted.filter(l => !l.data.contactCard);
+const year = new Date().getFullYear();
 ---
 
 <!DOCTYPE html>
@@ -116,6 +117,12 @@ const links = sorted.filter(l => !l.data.contactCard);
       </nav>
     </main>
 
+    <footer class="footer">
+      <span>&copy; {year} David Thiermann</span>
+      <span class="footer-sep" aria-hidden="true">|</span>
+      <span>Design by <a href="https://mattoleary.design" target="_blank" rel="noopener noreferrer" class="footer-link">Matt O'Leary Design</a></span>
+    </footer>
+
     <style>
       *, *::before, *::after {
         box-sizing: border-box;
@@ -124,21 +131,21 @@ const links = sorted.filter(l => !l.data.contactCard);
       }
 
       :root {
-        --blue:        #1E90FF;
-        --blue-deep:   #0070E0;
-        --blue-tint:   rgba(30, 144, 255, 0.10);
-        --blue-ring:   rgba(30, 144, 255, 0.18);
-        --blue-glow:   rgba(30, 144, 255, 0.22);
+        --blue:        #0180FF;
+        --blue-deep:   #0060CC;
+        --blue-tint:   rgba(1, 128, 255, 0.10);
+        --blue-ring:   rgba(1, 128, 255, 0.18);
+        --blue-glow:   rgba(1, 128, 255, 0.22);
         --dark:        #0D1728;
         --text:        #1C2840;
         --muted:       #64748B;
         --surface:     #FFFFFF;
-        --bg:          #ECF2FF;
-        --border:      #DDE5F7;
+        --bg:          #F0EBE4;
+        --border:      #DFD6CE;
         --radius:      16px;
       }
 
-      html, body {
+      html {
         height: 100%;
       }
 
@@ -147,6 +154,9 @@ const links = sorted.filter(l => !l.data.contactCard);
         background-color: var(--bg);
         color: var(--text);
         min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
@@ -160,13 +170,14 @@ const links = sorted.filter(l => !l.data.contactCard);
         width: min(700px, 130vw);
         height: 420px;
         border-radius: 50%;
-        background: radial-gradient(ellipse at 50% 20%, rgba(30, 144, 255, 0.18) 0%, transparent 68%);
+        background: radial-gradient(ellipse at 50% 20%, rgba(1, 128, 255, 0.18) 0%, transparent 68%);
         pointer-events: none;
         z-index: 0;
       }
 
       /* Page container */
       .page {
+        flex: 1;
         position: relative;
         z-index: 1;
         max-width: 500px;
@@ -190,10 +201,10 @@ const links = sorted.filter(l => !l.data.contactCard);
       .avatar-ring {
         border-radius: 50%;
         padding: 3px;
-        background: linear-gradient(145deg, var(--blue), #69b8ff);
+        background: linear-gradient(145deg, var(--blue), #4DAAFF);
         box-shadow:
           0 0 0 5px var(--blue-ring),
-          0 10px 40px rgba(30, 144, 255, 0.28);
+          0 10px 40px rgba(1, 128, 255, 0.28);
       }
 
       .avatar {
@@ -241,7 +252,7 @@ const links = sorted.filter(l => !l.data.contactCard);
       }
 
       .contact-icon {
-        filter: invert(47%) sepia(80%) saturate(800%) hue-rotate(196deg) brightness(105%);
+        filter: invert(40%) sepia(90%) saturate(1000%) hue-rotate(200deg) brightness(105%);
         flex-shrink: 0;
       }
 
@@ -279,7 +290,7 @@ const links = sorted.filter(l => !l.data.contactCard);
         color: var(--text);
         box-shadow:
           0 1px 3px rgba(0, 0, 0, 0.05),
-          0 1px 8px rgba(30, 144, 255, 0.06);
+          0 1px 8px rgba(1, 128, 255, 0.06);
         transition:
           transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
           box-shadow 0.22s ease,
@@ -291,8 +302,8 @@ const links = sorted.filter(l => !l.data.contactCard);
         transform: translateY(-3px);
         border-color: var(--blue);
         box-shadow:
-          0 6px 24px rgba(30, 144, 255, 0.18),
-          0 2px 8px rgba(30, 144, 255, 0.10);
+          0 6px 24px rgba(1, 128, 255, 0.18),
+          0 2px 8px rgba(1, 128, 255, 0.10);
       }
 
       .link-card:active {
@@ -393,6 +404,35 @@ const links = sorted.filter(l => !l.data.contactCard);
           opacity: 1;
           transform: translateY(0);
         }
+      }
+
+      /* ── Footer ─────────────────────────────────── */
+      .footer {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 20px 20px 28px;
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      .footer-sep {
+        color: var(--blue);
+        opacity: 0.35;
+      }
+
+      .footer-link {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.18s ease;
+      }
+
+      .footer-link:hover {
+        color: var(--blue);
       }
 
       /* ── Reduced motion ──────────────────────────── */
