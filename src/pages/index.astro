@@ -2,6 +2,13 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import davidPhoto from '../assets/david.png';
+import phoneIconRaw from '../assets/phone-call-svgrepo-com.svg?raw';
+import mailIconRaw from '../assets/mail-svgrepo-com.svg?raw';
+
+const contactIcons: Record<string, string> = {
+  'phone': phoneIconRaw,
+  'email': mailIconRaw,
+};
 
 const allLinks = await getCollection('links');
 const sorted = allLinks.sort((a, b) => a.data.order - b.data.order);
@@ -50,15 +57,9 @@ const year = new Date().getFullYear();
             <>
               {i > 0 && <span class="contact-sep" aria-hidden="true">|</span>}
               <a href={item.data.url} class="contact-item">
-                {item.data.thumbnail && (
-                  <Image
-                    src={item.data.thumbnail}
-                    alt=""
-                    width={14}
-                    height={14}
-                    class="contact-icon"
-                  />
-                )}
+                <span class="contact-icon" aria-hidden="true" set:html={
+                  item.data.url.startsWith('tel:') ? contactIcons.phone : contactIcons.email
+                } />
                 <span>{item.data.title}</span>
               </a>
             </>
@@ -252,7 +253,16 @@ const year = new Date().getFullYear();
       }
 
       .contact-icon {
-        filter: invert(40%) sepia(90%) saturate(1000%) hue-rotate(200deg) brightness(105%);
+        display: inline-flex;
+        align-items: center;
+        flex-shrink: 0;
+        color: var(--blue);
+      }
+
+      :global(.contact-icon svg) {
+        width: 14px;
+        height: 14px;
+        display: block;
         flex-shrink: 0;
       }
 
