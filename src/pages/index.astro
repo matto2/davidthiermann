@@ -1,0 +1,335 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import davidPhoto from '../assets/david.png';
+
+const allLinks = await getCollection('links');
+const links = allLinks.sort((a, b) => a.data.order - b.data.order);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="David Thiermann — Links" />
+    <title>David Thiermann</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="bg-glow" aria-hidden="true"></div>
+
+    <main class="page">
+      <!-- Profile -->
+      <header class="profile">
+        <div class="avatar-ring">
+          <Image
+            src={davidPhoto}
+            alt="David Thiermann"
+            width={300}
+            height={300}
+            class="avatar"
+            loading="eager"
+          />
+        </div>
+        <h1 class="name">David Thiermann</h1>
+      </header>
+
+      <!-- Links -->
+      <nav aria-label="Links">
+        <ul class="links-list" role="list">
+          {links.map((link, i) => (
+            <li class="link-item" style={`--i: ${i}`}>
+              <a
+                href={link.data.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-card"
+              >
+                <div class="thumb" aria-hidden="true">
+                  {link.data.thumbnail ? (
+                    <Image
+                      src={link.data.thumbnail}
+                      alt=""
+                      width={66}
+                      height={66}
+                      loading="lazy"
+                      class="thumb-img"
+                    />
+                  ) : (
+                    <div class="thumb-placeholder">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="2.5" stroke="white" stroke-width="1.6" stroke-opacity="0.75"/>
+                        <circle cx="8.5" cy="8.5" r="1.5" fill="white" fill-opacity="0.75"/>
+                        <path d="M3 16l5-5 4 4 3-3 6 6" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.75"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+
+                <div class="link-body">
+                  <span class="link-title">{link.data.title}</span>
+                  {link.data.description && (
+                    <span class="link-desc">{link.data.description}</span>
+                  )}
+                </div>
+
+                <div class="link-arrow" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M3.5 9h11M10 5l4.5 4L10 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </main>
+
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --blue:        #1E90FF;
+        --blue-deep:   #0070E0;
+        --blue-tint:   rgba(30, 144, 255, 0.10);
+        --blue-ring:   rgba(30, 144, 255, 0.18);
+        --blue-glow:   rgba(30, 144, 255, 0.22);
+        --dark:        #0D1728;
+        --text:        #1C2840;
+        --muted:       #64748B;
+        --surface:     #FFFFFF;
+        --bg:          #ECF2FF;
+        --border:      #DDE5F7;
+        --radius:      16px;
+      }
+
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        font-family: 'Outfit', system-ui, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Soft top-center glow */
+      .bg-glow {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(700px, 130vw);
+        height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at 50% 20%, rgba(30, 144, 255, 0.18) 0%, transparent 68%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Page container */
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 52px 20px 72px;
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+      }
+
+      /* ── Profile ─────────────────────────────────── */
+      .profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: 60ms;
+      }
+
+      .avatar-ring {
+        border-radius: 50%;
+        padding: 3px;
+        background: linear-gradient(145deg, var(--blue), #69b8ff);
+        box-shadow:
+          0 0 0 5px var(--blue-ring),
+          0 10px 40px rgba(30, 144, 255, 0.28);
+      }
+
+      .avatar {
+        display: block;
+        width: 114px;
+        height: 114px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center top;
+        border: 3px solid var(--bg);
+      }
+
+      .name {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: clamp(1.9rem, 7vw, 2.5rem);
+        font-weight: 700;
+        color: var(--dark);
+        letter-spacing: -0.015em;
+        line-height: 1.1;
+        text-align: center;
+      }
+
+      /* ── Links list ──────────────────────────────── */
+      .links-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+      }
+
+      .link-item {
+        opacity: 0;
+        animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: calc(240ms + var(--i, 0) * 75ms);
+      }
+
+      /* ── Link card ───────────────────────────────── */
+      .link-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 13px 15px 13px 13px;
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        text-decoration: none;
+        color: var(--text);
+        box-shadow:
+          0 1px 3px rgba(0, 0, 0, 0.05),
+          0 1px 8px rgba(30, 144, 255, 0.06);
+        transition:
+          transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.22s ease,
+          border-color 0.18s ease;
+        cursor: pointer;
+      }
+
+      .link-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--blue);
+        box-shadow:
+          0 6px 24px rgba(30, 144, 255, 0.18),
+          0 2px 8px rgba(30, 144, 255, 0.10);
+      }
+
+      .link-card:active {
+        transform: translateY(0) scale(0.988);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        transition-duration: 0.08s;
+      }
+
+      /* Thumbnail */
+      .thumb {
+        flex-shrink: 0;
+        width: 66px;
+        height: 66px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .thumb-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .thumb-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(140deg, var(--blue) 0%, var(--blue-deep) 100%);
+      }
+
+      /* Link text */
+      .link-body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .link-title {
+        font-size: 0.975rem;
+        font-weight: 600;
+        color: var(--dark);
+        line-height: 1.3;
+        letter-spacing: -0.005em;
+      }
+
+      .link-desc {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* Arrow */
+      .link-arrow {
+        flex-shrink: 0;
+        color: var(--blue);
+        opacity: 0.65;
+        transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .link-card:hover .link-arrow {
+        opacity: 1;
+        transform: translateX(3px);
+      }
+
+      /* ── Animation ───────────────────────────────── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── Reduced motion ──────────────────────────── */
+      @media (prefers-reduced-motion: reduce) {
+        .profile, .link-item {
+          animation: none;
+          opacity: 1;
+        }
+        .link-card:hover {
+          transform: none;
+        }
+      }
+    </style>
+  </body>
+</html>
