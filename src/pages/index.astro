@@ -21,8 +21,7 @@ const year = new Date().getFullYear();
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content="David Thiermann — Links" />
@@ -82,9 +81,9 @@ const year = new Date().getFullYear();
                       src={link.data.thumbnail}
                       alt=""
                       width={66}
-                      height={66}
+                      height={link.data.thumbnailHeight ?? 66}
                       loading="lazy"
-                      class={`thumb-img${link.data.thumbnailZoom ? ' thumb-img-zoom' : ''}`}
+                      class={`thumb-img${link.data.thumbnailZoom ? ' thumb-img-zoom' : ''}${link.data.thumbnailShrink ? ' thumb-img-shrink' : ''}`}
                     />
                   ) : (
                     <div class="thumb-placeholder">
@@ -146,6 +145,7 @@ const year = new Date().getFullYear();
 
       html {
         height: 100%;
+        font-size: 110%;
       }
 
       body {
@@ -338,6 +338,11 @@ const year = new Date().getFullYear();
 
       .thumb-img-zoom {
         transform: scale(1.18);
+      }
+
+      .thumb-img-shrink {
+        object-fit: contain;
+        transform: scale(0.9);
       }
 
       .thumb-icon {

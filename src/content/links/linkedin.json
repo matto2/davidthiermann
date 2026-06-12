@@ -1,0 +1,9 @@
+{
+  "title": "LinkedIn",
+  "url": "https://www.linkedin.com/in/david-thiermann-7442843/",
+  "description": "Connect on LinkedIn",
+  "order": 2,
+  "thumbnail": "../../assets/LI-In-Bug.png",
+  "thumbnailShrink": true,
+  "thumbnailHeight": 56
+}

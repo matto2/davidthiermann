@@ -10,6 +10,8 @@ const links = defineCollection({
     order: z.number(),
     thumbnail: image().optional(),
     thumbnailZoom: z.boolean().optional(),
+    thumbnailShrink: z.boolean().optional(),
+    thumbnailHeight: z.number().optional(),
     isIcon: z.boolean().optional(),
     contactCard: z.boolean().optional(),
   }),

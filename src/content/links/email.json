@@ -2,7 +2,7 @@
   "title": "guru@cruzio.com",
   "url": "mailto:guru@cruzio.com",
   "description": "Email David",
-  "order": 6,
+  "order": 7,
   "thumbnail": "../../assets/mail-svgrepo-com.svg",
   "isIcon": true,
   "contactCard": true
